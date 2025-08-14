@@ -1,0 +1,70 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c165dad..8aba6db 100755
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -23,8 +23,10 @@ if(WIN32)
+   include(cmake/windows_settings.cmake)
+ elseif(APPLE)
+   include(cmake/macos_settings.cmake)
++elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
++  include(cmake/linux_settings.cmake)
+ else()
+-  message(FATAL_ERROR "Unsupported operating system. Only Windows and macOS are supported.")
++  message(FATAL_ERROR "Unsupported operating system. Only Windows, macOS, and Linux are supported.")
+ endif()
+ 
+ # 共通設定をインクルード
+diff --git a/cmake/common_settings.cmake b/cmake/common_settings.cmake
+index d5c28c7..4b0edba 100644
+--- a/cmake/common_settings.cmake
++++ b/cmake/common_settings.cmake
+@@ -120,6 +120,8 @@ if(WIN32)
+   apply_windows_settings(Strecs3D)
+ elseif(APPLE)
+   apply_macos_settings(Strecs3D)
++elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
++  apply_linux_settings(Strecs3D)
+ endif()
+ 
+ # VTK 自動初期化設定 (VTK バージョンが 8.90.0 以上の場合)
+diff --git a/cmake/linux_settings.cmake b/cmake/linux_settings.cmake
+new file mode 100755
+index 0000000..846f45a
+--- /dev/null
++++ b/cmake/linux_settings.cmake
+@@ -0,0 +1,35 @@
++# Linux specific settings for Strecs3D
++
++# Compiler flag settings for Linux
++if(CMAKE_BUILD_TYPE STREQUAL "Debug")
++  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
++endif()
++
++# Function to apply settings for Linux
++function(apply_linux_settings TARGET_NAME)
++  # Link Library Settings for Linux (using libraries obtained from vcpkg)
++  target_link_libraries(${TARGET_NAME} PRIVATE
++    Qt6::Core
++    Qt6::Widgets
++    ${VTK_LIBRARIES}
++    lib3mf::lib3mf
++    libzip::zip
++  )
++
++  # Qt plugin path settings on Linux
++  set_target_properties(${TARGET_NAME} PROPERTIES
++    BUILD_WITH_INSTALL_RPATH TRUE
++    INSTALL_RPATH_USE_LINK_PATH TRUE
++  )
++endfunction()
++
++# Set the Qt plugin path
++if(Qt6_DIR)
++  get_filename_component(QT_INSTALL_PREFIX "${Qt6_DIR}/../../../" ABSOLUTE)
++  set(QT_PLUGIN_PATH "${QT_INSTALL_PREFIX}/plugins")
++  if(EXISTS "${QT_PLUGIN_PATH}")
++    message(STATUS "Found Qt plugins at: ${QT_PLUGIN_PATH}")
++  else()
++    message(WARNING "Qt plugins not found at ${QT_PLUGIN_PATH}")
++  endif()
++endif() 

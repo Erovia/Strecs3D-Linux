@@ -1,0 +1,13 @@
+diff --git a/Source/Model/Writer/v100/NMR_ResourceDependencySorter.cpp b/Source/Model/Writer/v100/NMR_ResourceDependencySorter.cpp
+index b7e39678..b9559791 100644
+--- a/Source/Model/Writer/v100/NMR_ResourceDependencySorter.cpp
++++ b/Source/Model/Writer/v100/NMR_ResourceDependencySorter.cpp
+@@ -32,6 +32,8 @@ sorting them topologically.
+ 
+ #include "Model/Writer/v100/NMR_ResourceDependencySorter.h"
+ 
++#include <algorithm>
++
+ #include "Common/Graph/DirectedGraph.h"
+ #include "Common/Graph/GraphAlgorithms.h"
+ #include "Model/Classes/NMR_Model.h"
