@@ -17,7 +17,7 @@ env:
 jobs:
   build:
     name: Build Strecs3D Linux image
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.arch == 'amd64' ? 'ubuntu-latest' : 'ubuntu-24.04-arm64' }}
     permissions:
       contents: read
       packages: write
@@ -37,9 +37,6 @@ jobs:
         remove-codeql: 'true'
         remove-docker-images: 'true'
 
-    - name: Install qemu dependency
-      run: sudo apt-get install -y qemu-user-static
-
     - uses: actions/checkout@v5
 
     - name: Build image for ${{ matrix.arch }}
@@ -52,6 +49,8 @@ jobs:
           ./Containerfile
         oci: true
         archs: ${{ matrix.arch }}
+        build-args: |
+          env=VCPKG_MAX_CONCURRENCY=4
 
     - name: Push To GHCR
       uses: redhat-actions/push-to-registry@v2

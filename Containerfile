@@ -78,7 +78,7 @@ COPY lib3mf_fix413.patch .
 RUN cat lib3mf_fix413.patch >> vcpkg/ports/lib3mf/lib3mf_vcpkg.patch
 
 # Build lib3mf 2.x
-RUN vcpkg install lib3mf && \
+RUN vcpkg install --allow-unsupported lib3mf && \
     rm -rf vcpkg/buildtrees vcpkg/downloads
 
 # Build libzip
