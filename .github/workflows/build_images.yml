@@ -17,13 +17,17 @@ env:
 jobs:
   build:
     name: Build Strecs3D Linux image
-    runs-on: ${{ matrix.arch == 'amd64' ? 'ubuntu-latest' : 'ubuntu-24.04-arm64' }}
+    runs-on: ${{ matrix.os }}
     permissions:
       contents: read
       packages: write
     strategy:
       matrix:
-        arch: [amd64, arm64]
+        include:
+          - os: ubuntu-latest
+            arch: amd64
+          - os: ubuntu-24.04-arm64
+            arch: arm64
 
     steps:
     - name: Maximize build space
