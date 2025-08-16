@@ -73,6 +73,6 @@ podman build -t strecs3d:dev .
 
 ## Todo
 
-- [] Arm64 support: Largely depends on the dependency (and as such the vcpkg) situation. Looked into it a bit, but no image built yet.
-- [] Automated build with Github Actions: Attempts already done on the `gh_actions` branch, but this is a large and long-running build that seems to be really pushing the limitations of the free, hosted builders.
-- [] Using Flatpak instead: I don't have the time or know-how to tackle this at the moment.
+- [ ] Arm64 support: Largely depends on the dependency (and as such the vcpkg) situation. Looked into it a bit, but no image built yet.
+- [ ] Automated build with Github Actions: Attempts already done on the `gh_actions` branch, but this is a large and long-running build that seems to be really pushing the limitations of the free, hosted builders.
+- [ ] Using Flatpak instead: I don't have the time or know-how to tackle this at the moment.
